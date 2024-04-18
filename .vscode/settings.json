@@ -1,0 +1,22 @@
+{
+    "files.exclude": {
+        // -------- PROJECT DIRECTORIES --------
+        "**/.git/": true,
+        "**/*.egg-info/": true,
+        // ".venv/": true,
+        "build/": true,
+        // ------- PROJECT FILES -------
+        "LICENSE": true,
+        // "README.md": true,
+        "**/__pycache__": true,
+        ".ruff_cache/": true,
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "pyproject.toml": ".gitignore, .gitattributes, environment.yml, pixi.lock",
+    },
+
+    "python.analysis.autoImportCompletions": true,
+    "debugpy.debugJustMyCode": false,
+    "python.analysis.typeCheckingMode": "basic"
+}

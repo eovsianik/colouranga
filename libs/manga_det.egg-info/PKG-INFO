@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: manga-det
+Version: 0.1.0
+Summary: Contains code of the master's thesis on the subject of 'Transfer learning in locomotion problem via masked self-attention mechanism'.
+Requires-Python: ==3.10.*
+Description-Content-Type: text/markdown
+Requires-Dist: stable_diffusion_reference_only@ git+https://github.com/aihao2000/stable-diffusion-reference-only.git
+Requires-Dist: anime-segmentation@ git+https://github.com/aihao2000/anime-segmentation.git
+Requires-Dist: diffusers==0.21.*
+Requires-Dist: accelerate
