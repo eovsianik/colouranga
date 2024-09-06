@@ -1,4 +1,0 @@
-stable_diffusion_reference_only@ git+https://github.com/aihao2000/stable-diffusion-reference-only.git
-anime-segmentation@ git+https://github.com/aihao2000/anime-segmentation.git
-diffusers==0.21.*
-accelerate

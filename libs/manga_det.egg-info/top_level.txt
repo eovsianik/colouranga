@@ -1,4 +1,0 @@
-Example_Based_Manga_Colorization
-anime_segmentation_test
-lizi
-magi

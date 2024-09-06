@@ -1,10 +1,15 @@
 import os
 from dataclasses import dataclass
 
+import cv2
 import networkx as nx
 import numpy as np
 import torch
+from anime_segmentation import character_segment as anime_character_segment
 from PIL import Image
+from stable_diffusion_reference_only.pipelines.pipeline_stable_diffusion_reference_only import (
+    StableDiffusionReferenceOnlyPipeline,
+)
 from torchmetrics.functional.pairwise import pairwise_cosine_similarity
 
 from colouranga.from_magi_model import MyMagiModel
@@ -208,10 +213,8 @@ def sample_img(
         if crop_embeddings_sample is None:
             crop_embeddings_sample = current_embeddings
         else:
-            crop_embeddings_sample = torch.cat(
-                (crop_embeddings_sample, current_embeddings), dim=0
-            )
-    return crop_embeddings_sample, images_color_for_analysis # type: ignore
+            crop_embeddings_sample = torch.cat((crop_embeddings_sample, current_embeddings), dim=0)
+    return crop_embeddings_sample, images_color_for_analysis  # type: ignore
 
 
 # match color examples embeddings and bboxes embeddings
@@ -275,3 +278,50 @@ def creating_pairs(
                     )
                 )
     return list_for_colorization
+
+
+def character_segment(model, img):
+    if img is None:
+        return None
+    img = anime_character_segment(model, img)
+    img = cv2.cvtColor(img, cv2.COLOR_RGBA2RGB)
+    return img
+
+
+def color_inversion(img):
+    if img is None:
+        return None
+    return 255 - img
+
+
+def get_line_art(img):
+    if img is None:
+        return None
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+
+    img = cv2.adaptiveThreshold(
+        img,
+        255,
+        cv2.ADAPTIVE_THRESH_MEAN_C,
+        cv2.THRESH_BINARY,
+        blockSize=5,
+        C=7,
+    )
+
+    img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
+    return img
+
+
+def inference(pipeline, prompt, blueprint, num_inference_steps):
+    if prompt is None or blueprint is None:
+        return None
+    return np.array(
+        pipeline(
+            prompt=Image.fromarray(prompt),
+            blueprint=Image.fromarray(blueprint),
+            num_inference_steps=num_inference_steps,
+        ).images[0]
+    )
+
+
+

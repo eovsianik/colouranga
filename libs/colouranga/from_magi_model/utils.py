@@ -108,8 +108,7 @@ def visualise_single_image_prediction(image_as_np_array, predictions, filename):
     else:
         figure, subplot = plt.subplots(1, 1, figsize=(10 * w / h, 10))
     subplot.imshow(image_as_np_array)
-    # plot_bboxes(subplot, predictions["panels"], color="green")
-    # plot_bboxes(subplot, predictions["texts"], color="red", add_index=True)
+
     plot_bboxes(subplot, predictions["characters"], color="blue")
 
     COLOURS = [
@@ -156,19 +155,6 @@ def visualise_single_image_prediction(image_as_np_array, predictions, filename):
             subplot.plot([x1, x2], [y1, y2], color=random_colour, linewidth=2)
             subplot.plot([x2], [y2], color=random_colour, marker="o", markersize=5)
 
-    # if text_character_associations := predictions.get("text_character_associations"):
-    #     for i, j in text_character_associations:
-    #         score = predictions["dialog_confidences"][i]
-    #         bbox_i = predictions["texts"][i]
-    #         bbox_j = predictions["characters"][j]
-    #         x1 = bbox_i[0] + (bbox_i[2] - bbox_i[0]) / 2
-    #         y1 = bbox_i[1] + (bbox_i[3] - bbox_i[1]) / 2
-    #         x2 = bbox_j[0] + (bbox_j[2] - bbox_j[0]) / 2
-    #         y2 = bbox_j[1] + (bbox_j[3] - bbox_j[1]) / 2
-    #         subplot.plot(
-    #             [x1, x2], [y1, y2], color="red", linewidth=2, linestyle="dashed", alpha=score
-    #         )
-
     subplot.axis("off")
     if filename is not None:
         plt.savefig(filename, bbox_inches="tight", pad_inches=0)
@@ -194,9 +180,9 @@ def plot_bboxes(subplot, bboxes, color="red", add_index=False):
 
 def sort_panels(rects):
     before_rects = convert_to_list_of_lists(rects)
-    # slightly erode all rectangles initially to account for imperfect detections
+
     rects = [erode_rectangle(rect, 0.05) for rect in before_rects]
-    # rects - список со списками, в каждом из которых по 4
+
     G = nx.DiGraph()
     G.add_nodes_from(range(len(rects)))
     for i in range(len(rects)):

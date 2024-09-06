@@ -4815,7 +4815,7 @@ packages:
   name: manga-det
   version: 0.1.0
   path: .
-  sha256: 590d1d34c02fabbf921466a84b1afda0bf623430dd06027a8810245280f48ed8
+  sha256: 0d69437070e80feca642a69496340b42c49eb7816599d5bffb649ea3c8148a43
   requires_dist:
   - stable-diffusion-reference-only @ git+https://github.com/aihao2000/stable-diffusion-reference-only.git
   - anime-segmentation @ git+https://github.com/aihao2000/anime-segmentation.git
