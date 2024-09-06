@@ -26,7 +26,7 @@ You must specify the folders where the original black and white manga pages, col
 - Create Python 3.10 virtual environment:
   - `python3.10 -m venv .venv`
 - Activate it and run:
-  - `pip install -r requirements.txt`
+  - `pip install .`
 - See [this notebook](notebooks/example.ipynb)
 
 ## Acknowledgements

@@ -1,6 +1,6 @@
 [project]
 name = "colouranga"
-version = "0.1.0"
+version = "0.2.0"
 description = "Contains code of the master's thesis on the subject of 'Diffusion models implementation to improve color uniformity of manga characters'."
 requires-python = "==3.10.*"
 readme = "README.md"
@@ -20,6 +20,8 @@ dependencies = [
     "transformers>=4.44.2",
     "datasets>=2.21.0",
     "huggingface-hub>=0.24.6",
+    "ipykernel>=6.29.5",
+    "ipywidgets>=8.1.5",
 ]
 
 [build-system]
@@ -38,12 +40,6 @@ verify_ssl = true
 include_packages = ["torch", "torchvision"]
 
 
-
-[tool.pdm.dev-dependencies]
-jupyter = [
-    "ipykernel>=6.29.5",
-    "ipywidgets>=8.1.5",
-]
 [tool.ruff]
 src = ["libs"]
 line-length = 100
