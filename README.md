@@ -33,5 +33,5 @@ You must specify the folders where the original black and white manga pages, col
 
 This work is heavily inspired by these projects:
 
-- [github.com/aihao2000/stable-diffusion-reference-only](https://github.com/aihao2000/stable-diffusion-reference-only)
+- [aihao2000/stable-diffusion-reference-only](https://github.com/aihao2000/stable-diffusion-reference-only)
 - [ragavsachdeva/magi](https://github.com/ragavsachdeva/magi)
