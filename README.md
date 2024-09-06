@@ -24,8 +24,14 @@ You must specify the folders where the original black and white manga pages, col
 
 - Clone this repository
 - Create Python 3.10 virtual environment:
-    - `python3.10 -m venv .venv`
+  - `python3.10 -m venv .venv`
 - Activate it and run:
-    - `pip install -r requirements.txt`
-- ???
-- See [this notebooks](notebooks/example.ipynb)
+  - `pip install -r requirements.txt`
+- See [this notebook](notebooks/example.ipynb)
+
+## Acknowledgements
+
+This work is heavily inspired by these projects:
+
+- [github.com/aihao2000/stable-diffusion-reference-only](https://github.com/aihao2000/stable-diffusion-reference-only)
+- [ragavsachdeva/magi](https://github.com/ragavsachdeva/magi)
