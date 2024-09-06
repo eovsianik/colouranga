@@ -1,7 +1,9 @@
 words:
   - colouranga
+  - Detr
   - networkx
   - prepreparing
   - sublists
-  - prepreparing
   - torchmetrics
+  - visualise
+  - xywh

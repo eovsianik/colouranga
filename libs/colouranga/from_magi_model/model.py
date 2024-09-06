@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 import torch
 from libs.colouranga.from_magi_model.config import MagiConfig
 from libs.colouranga.from_magi_model.processor import MagiProcessor
@@ -97,7 +95,7 @@ class MyMagiModel(PreTrainedModel):
 
         batch_bboxes = center_to_corners_format(predicted_bboxes)  # type: ignore
 
-        if isinstance(original_image_sizes, List):
+        if isinstance(original_image_sizes, list):
             img_h = torch.Tensor([i[0] for i in original_image_sizes])
             img_w = torch.Tensor([i[1] for i in original_image_sizes])
         else:
@@ -146,99 +144,24 @@ class MyMagiModel(PreTrainedModel):
 
         character_scores = []
 
-        for character_score, character_indices in zip(batch_scores, batch_character_indices):
+        for character_score, character_indices in zip(
+            batch_scores, batch_character_indices, strict=False
+        ):
             character_scores.append(torch.gather(character_score, 0, character_indices))
 
         image_bboxes = []
 
-        for image, bboxes in zip(images, crop_bboxes):
+        for image, bboxes in zip(images, crop_bboxes, strict=False):
             crops = self.processor.crop_image(image, bboxes)
             image_bboxes.append(crops)
 
         return crop_bboxes, crop_embeddings_for_batch, image_bboxes, character_scores
 
-    def predict_detections_and_associations(
-        self,
-        images: list[NDArray],
-        move_to_device_fn=None,
-        character_detection_threshold=0.3,
-        panel_detection_threshold=0.2,
-        text_detection_threshold=0.25,
-        character_character_matching_threshold=0.65,
-        text_character_matching_threshold=0.4,
-    ):
-        move_to_device_fn = self.move_to_device if move_to_device_fn is None else move_to_device_fn
-
-        inputs_to_detection_transformer = self.processor.preprocess_inputs_for_detection(images)
-
-        inputs_to_detection_transformer = move_to_device_fn(
-            inputs_to_detection_transformer
-        )  # dict, len 2
-
-        detection_transformer_output = self._get_detection_transformer_output(
-            **inputs_to_detection_transformer  # type: ignore
-        )
-
-        predicted_class_scores, predicted_bboxes = self._get_predicted_bboxes_and_classes(
-            detection_transformer_output
-        )
-
-        def get_character_character_matching_scores(batch_character_indices, batch_bboxes):
-            predicted_obj_tokens_for_batch = self._get_predicted_obj_tokens(
-                detection_transformer_output
-            )
-
-            predicted_c2c_tokens_for_batch = self._get_predicted_c2c_tokens(
-                detection_transformer_output
-            )
-
-            crop_bboxes = [
-                batch_bboxes[i][batch_character_indices[i]]
-                for i in range(len(batch_character_indices))
-            ]
-
-            crop_embeddings_for_batch = self.predict_crop_embeddings(
-                images, crop_bboxes, move_to_device_fn
-            )
-
-            character_obj_tokens_for_batch = []
-            c2c_tokens_for_batch = []
-
-            for predicted_obj_tokens, predicted_c2c_tokens, character_indices in zip(
-                predicted_obj_tokens_for_batch,
-                predicted_c2c_tokens_for_batch,
-                batch_character_indices,
-            ):
-                character_obj_tokens_for_batch.append(predicted_obj_tokens[character_indices])
-
-                c2c_tokens_for_batch.append(predicted_c2c_tokens)
-
-            return self._get_character_character_affinity_matrices(
-                character_obj_tokens_for_batch=character_obj_tokens_for_batch,
-                crop_embeddings_for_batch=crop_embeddings_for_batch,  # type: ignore
-                c2c_tokens_for_batch=c2c_tokens_for_batch,
-                apply_sigmoid=True,
-            )
-
-        return self.processor.postprocess_detections_and_associations(
-            images=images,
-            predicted_bboxes=predicted_bboxes,
-            predicted_class_scores=predicted_class_scores,
-            original_image_sizes=torch.stack(
-                [torch.tensor(img.shape[:2]) for img in images], dim=0
-            ).to(predicted_bboxes.device),
-            get_character_character_matching_scores=get_character_character_matching_scores,
-            character_detection_threshold=character_detection_threshold,
-            panel_detection_threshold=panel_detection_threshold,
-            text_detection_threshold=text_detection_threshold,
-            character_character_matching_threshold=character_character_matching_threshold,
-        )
-
     def predict_crop_embeddings(
         self, images, crop_bboxes, move_to_device_fn=None, mask_ratio=0.0, batch_size=256
     ):
         assert isinstance(
-            crop_bboxes, List
+            crop_bboxes, list
         ), "please provide a list of bboxes for each image to get embeddings for"
 
         move_to_device_fn = self.move_to_device if move_to_device_fn is None else move_to_device_fn
@@ -250,7 +173,7 @@ class MyMagiModel(PreTrainedModel):
 
         num_crops_per_batch = [len(bboxes) for bboxes in crop_bboxes]
 
-        for image, bboxes, num_crops in zip(images, crop_bboxes, num_crops_per_batch):
+        for image, bboxes, num_crops in zip(images, crop_bboxes, num_crops_per_batch, strict=False):
             crops = self.processor.crop_image(image, bboxes)
 
             assert len(crops) == num_crops
@@ -286,7 +209,7 @@ class MyMagiModel(PreTrainedModel):
         return visualise_single_image_prediction(image_as_np_array, predictions, filename)
 
     def _get_detection_transformer_output(
-        self, pixel_values: torch.FloatTensor, pixel_mask: Optional[torch.LongTensor] = None
+        self, pixel_values: torch.FloatTensor, pixel_mask: torch.LongTensor | None = None
     ) -> ConditionalDetrModelOutput:
         return self.detection_transformer(
             pixel_values=pixel_values, pixel_mask=pixel_mask, return_dict=True

@@ -2,12 +2,13 @@ import random
 from copy import deepcopy
 from itertools import groupby
 
-import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
 import torch
+from matplotlib import patches
 from PIL import Image
+
 # from shapely.geometry import Point, box
 
 

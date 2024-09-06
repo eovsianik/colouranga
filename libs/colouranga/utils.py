@@ -7,9 +7,6 @@ import numpy as np
 import torch
 from anime_segmentation import character_segment as anime_character_segment
 from PIL import Image
-from stable_diffusion_reference_only.pipelines.pipeline_stable_diffusion_reference_only import (
-    StableDiffusionReferenceOnlyPipeline,
-)
 from torchmetrics.functional.pairwise import pairwise_cosine_similarity
 
 from colouranga.from_magi_model import MyMagiModel
