@@ -1,93 +1,49 @@
 [project]
-name = "manga-det"
+name = "colouranga"
 version = "0.1.0"
-description = "Contains code of the master's thesis on the subject of 'Transfer learning in locomotion problem via masked self-attention mechanism'."
+description = "Contains code of the master's thesis on the subject of 'Diffusion models implementation to improve color uniformity of manga characters'."
 requires-python = "==3.10.*"
-dependencies = [
-    "stable_diffusion_reference_only @ git+https://github.com/aihao2000/stable-diffusion-reference-only.git",
-    "anime-segmentation @ git+https://github.com/aihao2000/anime-segmentation.git", "diffusers==0.21.*", "accelerate",
-]
 readme = "README.md"
+authors = [{ name = "eovsianik", email = "liza.ovsianik@gmail.com" }]
+license = { text = "MIT" }
+dependencies = [
+    "diffusers==0.21.*",
+    "accelerate",
+    "stable_diffusion_reference_only @ git+https://github.com/aihao2000/stable-diffusion-reference-only.git",
+    "anime-segmentation @ git+https://github.com/aihao2000/anime-segmentation.git",
+    "torch==2.3.*",
+    "opencv-python>=4.10.0.84",
+    "torchmetrics>=1.4.1",
+    "numpy>=2.1.1",
+    "pillow>=10.4.0",
+    "torchinfo>=1.8.0",
+    "transformers>=4.44.2",
+    "datasets>=2.21.0",
+    "huggingface-hub>=0.24.6",
+]
 
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
-[tool.setuptools]
-package-dir = { "" = "libs" }
 
-[tool.pixi.project]
-channels = ["nvidia", "conda-forge", "pytorch"]
-platforms = ["linux-64"]
+[tool.pdm]
+distribution = true
 
-[tool.pixi.pypi-options]
-extra-index-urls = ["https://pypi.nvidia.com"]
 
-[tool.pixi.dependencies]
-opencv = { version = "*", channel = "conda-forge" }
-torchmetrics = ">=1.4.0.post0,<1.4.1"
-timm = ">=1.0.3,<1.1"
-[tool.pixi.feature.numeric.dependencies] # ? numeric
-numpy = { version = "*", channel = "conda-forge" }
-einops = { version = "*", channel = "conda-forge" }
-scipy = { version = "*", channel = "conda-forge" }
-pandas = { version = "*", channel = "conda-forge" }
-scikit-learn = { version = "*", channel = "conda-forge" }
-pillow = { version = "*", channel = "conda-forge" }
-jaxtyping = { version = "*", channel = "conda-forge" }
+[[tool.pdm.source]]
+name = "pytorch-cu118"
+url = "https://download.pytorch.org/whl/cu118"
+verify_ssl = true
+include_packages = ["torch", "torchvision"]
 
-[tool.pixi.feature.plots.dependencies] # ? plots
-matplotlib = { version = "*", channel = "conda-forge" }
-seaborn = { version = "*", channel = "conda-forge" }
 
-[tool.pixi.feature.torch.dependencies] # ? torch
-pytorch = { version = "2.3.*", channel = "pytorch" }
-pytorch-cuda = { version = "11.8.*", channel = "pytorch" }
-torchvision = { version = "*", channel = "pytorch" }
-torchinfo = { version = "*", channel = "conda-forge" }
-# pytorch-lightning = { version = "*", channel = "conda-forge" }
-# libfaiss = { version = "*", channel = "pytorch" }
-# faiss-gpu = { version = ">=1.8.0", channel = "pytorch" }
 
-[tool.pixi.feature.mlops.dependencies] # ? MLOps
-tensorboard = { version = "*", channel = "conda-forge" }
-
-[tool.pixi.feature.jupyter.dependencies] # ? jupyter
-ipykernel = { version = "*", channel = "conda-forge" }
-ipywidgets = { version = "*", channel = "conda-forge" }
-
-[tool.pixi.feature.huggingface.dependencies] # ? 🤗
-transformers = { version = "*", channel = "conda-forge" }
-datasets = { version = "*", channel = "conda-forge" }
-# diffusers = { version = "0.21.0", channel = "conda-forge" }
-huggingface_hub = { version = "*", channel = "conda-forge" }
-
-[tool.pixi.feature.web.dependencies] # ? web
-httpx = { version = "*", channel = "conda-forge" }
-
-[tool.pixi.feature.misc.dependencies] # ? misc
-tqdm = { version = "*", channel = "conda-forge" }
-rich = { version = "*", channel = "conda-forge" }
-beartype = { version = "*", channel = "conda-forge" }
-typing_extensions = { version = "*", channel = "conda-forge" }
-
-[tool.pixi.pypi-dependencies]
-manga-det = { path = ".", editable = true }
-
-[tool.pixi.environments]
-default = { features = [
-    "misc",
-    "numeric",
-    "plots",
-    "torch",
-    "mlops",
-    "jupyter",
-    "huggingface",
-    "web",
-], solve-group = "default" }
-
-[tool.pixi.tasks]
-
+[tool.pdm.dev-dependencies]
+jupyter = [
+    "ipykernel>=6.29.5",
+    "ipywidgets>=8.1.5",
+]
 [tool.ruff]
 src = ["libs"]
 line-length = 100
@@ -135,13 +91,11 @@ ignore = [
 ]
 
 [tool.pyright]
-pythonVersion = "3.11"
-venvPath = "./.pixi/envs"
+pythonVersion = "3.10"
 reportPrivateImportUsage = false
 reportMissingImports = true
 # reportMissingTypeStubs = true
 
 
 #? cSpell Configuration:
-# cspell: words pixi einops jaxtyping ipywidgets httpx
-# cspell: words mlops tryceratops FURB
+# cspell: words tryceratops FURB ipywidgets

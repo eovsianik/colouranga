@@ -1,10 +1,4 @@
 import torch
-from libs.colouranga.from_magi_model.config import MagiConfig
-from libs.colouranga.from_magi_model.processor import MagiProcessor
-from libs.colouranga.from_magi_model.utils import (
-    move_to_device,
-    visualise_single_image_prediction,
-)
 from numpy.typing import NDArray
 from torch import nn
 from transformers import (
@@ -18,6 +12,13 @@ from transformers.models.conditional_detr.modeling_conditional_detr import (
     ConditionalDetrMLPPredictionHead,
     ConditionalDetrModelOutput,
     inverse_sigmoid,
+)
+
+from colouranga.from_magi_model.config import MagiConfig
+from colouranga.from_magi_model.processor import MagiProcessor
+from colouranga.from_magi_model.utils import (
+    move_to_device,
+    visualise_single_image_prediction,
 )
 
 

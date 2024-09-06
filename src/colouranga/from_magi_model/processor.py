@@ -4,8 +4,8 @@ import numpy as np
 import torch
 
 # from shapely.geometry import box
-from libs.colouranga.from_magi_model.config import MagiConfig
-from libs.colouranga.from_magi_model.utils import x1y1x2y2_to_xywh
+from colouranga.from_magi_model.config import MagiConfig
+from colouranga.from_magi_model.utils import x1y1x2y2_to_xywh
 from transformers import ConditionalDetrImageProcessor, ViTImageProcessor
 
 # from shapely.geometry import box

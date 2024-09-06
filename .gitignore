@@ -4,3 +4,5 @@ __pycache__
 /models/
 /out/
 *.egg-info
+.pdm-python
+/dist/
